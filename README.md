@@ -1,5 +1,5 @@
 # 🚀 MY LPG (Gassin)
- <img src="assets/logo.jpeg" alt="List Lokasi Agen" width="50"/> 
+ <img src="assets/logo.png" alt="List Lokasi Agen" width="50"/> 
 > *Solusi Cerdas Menemukan Agen Gas Terdekat Secara Real-Time.*
 
 ## 📱 Deskripsi Produk
