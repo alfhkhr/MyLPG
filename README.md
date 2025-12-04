@@ -92,15 +92,15 @@ Berikut adalah antarmuka pengguna dari aplikasi MY LPG:
 
 | **Halaman Beranda** | **Peta Lokasi Agen** |
 |:---:|:---:|
-| <img src="assets/beranda.png" alt="Beranda" width="250"/> | <img src="assets/peta.png" alt="Peta Lokasi Agen" width="250"/> |
+| <img src="assets/beranda.jpeg" alt="Beranda" width="250"/> | <img src="assets/peta.jpeg" alt="Peta Lokasi Agen" width="250"/> |
 | *Menampilkan filter gas & lokasi user* | *Peta interaktif dengan marker agen* |
 
 | **Input Agen Baru** | **Edit Location** |
 |:---:|:---:|
-| <img src="assets/input.png" alt="Form Input Agen Baru" width="250"/> | <img src="assets/edit.png" alt="Form Edit Location" width="250"/> |
+| <img src="assets/input.jpeg" alt="Form Input Agen Baru" width="250"/> | <img src="assets/edit.jpeg" alt="Form Edit Location" width="250"/> |
 | **List data dengan opsi Edit & Hapus**|
 |:---:|:---:|
-| <img src="assets/list.png" alt="List Lokasi Agen" width="250"/> |
+| <img src="assets/list.jpeg" alt="List Lokasi Agen" width="250"/> |
 
 
 ## 🚀 Cara Menjalankan Aplikasi
