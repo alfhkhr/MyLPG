@@ -99,8 +99,8 @@ Berikut adalah antarmuka pengguna dari aplikasi MY LPG:
 |:---:|:---:|
 | <img src="assets/input.jpeg" alt="Form Input Agen Baru" width="250"/> | <img src="assets/edit.jpeg" alt="Form Edit Location" width="250"/> |
 | **List data dengan opsi Edit & Hapus**|
-|:---:|:---:|
-| <img src="assets/list.jpeg" alt="List Lokasi Agen" width="250"/> |
+|:---:|
+| <img src="assets/list.jpeg" alt="List Lokasi Agen" width="250"/> 
 
 
 ## 🚀 Cara Menjalankan Aplikasi
