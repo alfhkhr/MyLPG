@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Firebase & Leaflet Map</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+    />
+    <style>
+      html,
+      body {
+        margin: 0;
+        padding: 0;
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+      }
+      #map {
+        width: 100vw;
+        height: 100vh;
+        box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.5);
+      }
+
+      .leaflet-popup-content-wrapper {
+          border-radius: 8px;
+          padding: 1px;
+          box-shadow: 0 5px 20px rgba(0, 123, 255, 0.3);
+          border-left: 5px solid #007bff;
+          transition: all 0.2s ease-out;
+      }
+
+      .leaflet-popup-content-wrapper:hover {
+          box-shadow: 0 8px 30px rgba(0, 123, 255, 0.5);
+          border-left-width: 8px;
+      }
+
+      .leaflet-popup-content {
+          font-size: 14px;
+          line-height: 1.5;
+          max-width: 250px;
+          padding: 10px 15px;
+          color: #333;
+      }
+      .popup-title {
+          font-weight: bold;
+          font-size: 17px;
+          color: #007bff;
+          margin-bottom: 5px;
+          display: block;
+          border-bottom: 2px solid #007bff;
+          padding-bottom: 5px;
+      }
+      .popup-detail {
+          margin-top: 8px;
+          color: #555;
+      }
+      .popup-hours {
+          font-style: normal;
+          font-weight: 500;
+          color: #007bff;
+          margin-top: 5px;
+          display: block;
+          padding-top: 5px;
+          border-top: 1px dashed #d1e2ff;
+      }
+
+      .leaflet-popup-content .fa-solid {
+          color: #007bff;
+          margin-right: 5px;
+      }
+      .leaflet-popup-tip {
+          background-color: #007bff;
+          box-shadow: 0 3px 14px rgba(0,0,0,0.2);
+      }
+      
+      .custom-pin {
+          background-color: #007bff;
+          width: 30px;
+          height: 30px;
+          border-radius: 50%;
+          border: 4px solid #fff;
+          box-shadow: 0 0 8px rgba(0, 0, 0, 0.4);
+          display: flex;
+          align-items: center;
+          justify-content: center;
+      }
+      .custom-pin i {
+          color: #fff;
+          font-size: 16px;
+      }
+      
+      .leaflet-marker-icon.hovered {
+          filter: brightness(1.2) drop-shadow(0 0 10px rgba(0, 123, 255, 0.8));
+          transform: scale(1.1);
+          transition: all 0.2s ease-in-out;
+      }
+      
+    </style>
+  </head>
+  <body>
+    <div id="map"></div>
+    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.6.8/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.6.8/firebase-database.js"></script>
+
+    <script>
+      const firebaseConfig = {
+        apiKey: "AIzaSyBjw7e84DQh2iegRoPNAosJYqbvkYfQbik",
+        authDomain: "gassin-22676.firebaseapp.com",
+        databaseURL: "https://gassin-22676-default-rtdb.firebaseio.com",
+        projectId: "gassin-22676",
+        storageBucket: "gassin-22676.firebasestorage.app",
+        messagingSenderId: "280832197322",
+        appId: "1:280832197322:web:dea99bc657e10d75b12a33",
+      };
+
+      firebase.initializeApp(firebaseConfig);
+      const database = firebase.database();
+
+      const map = L.map("map").setView([-7.7956, 110.3695], 13);
+
+      const osmLayer = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+        maxZoom: 19
+      });
+
+      const cartoLight = L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
+        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>',
+        subdomains: 'abcd',
+        maxZoom: 20
+      });
+      
+      const esriImagery = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
+          attribution: 'Tiles &copy; Esri &mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community',
+          maxZoom: 18
+      });
+
+      cartoLight.addTo(map);
+
+      const baseLayers = {
+        "Peta Standard (OSM)": osmLayer,
+        "Peta Bersih (Carto)": cartoLight,
+        "Citra Satelit (ESRI)": esriImagery,
+      };
+
+      L.control.layers(baseLayers).addTo(map);
+
+      const CustomPinIcon = L.DivIcon.extend({
+          options: {
+              className: 'custom-pin',
+              iconSize: [38, 38], 
+              iconAnchor: [19, 19],
+              popupAnchor: [0, -20],
+              html: '<i class="fa-solid fa-fire"></i>' 
+          }
+      });
+      const customPinIcon = new CustomPinIcon();
+      
+      const agentsRef = database.ref("/agents");
+      const markers = [];
+      
+      agentsRef.on("value", (snapshot) => {
+        markers.forEach(marker => map.removeLayer(marker));
+        markers.length = 0; 
+        
+        const data = snapshot.val();
+        if (data) {
+          Object.keys(data).forEach((key) => {
+            const agent = data[key];
+            if (agent.coordinates) {
+              const coords = agent.coordinates.split(",").map(parseFloat);
+              const marker = L.marker(coords, { icon: customPinIcon }).addTo(map);
+              markers.push(marker); 
+              
+              const popupContent = `
+                <span class="popup-title">${agent.name}</span>
+                <span class="popup-detail"><i class="fa-solid fa-map-pin"></i> ${agent.address || "Alamat tidak tersedia"}</span>
+                <span class="popup-hours"><i class="fa-solid fa-clock"></i> Buka: ${agent.openTime || "-"} • Tutup: ${agent.closeTime || "-"}</span>
+              `;
+              marker.bindPopup(popupContent, {
+                  closeButton: false,
+                  minWidth: 200
+              });
+              
+              addMarkerInteractivity(marker);
+            }
+          });
+        }
+      });
+
+      let locationMarker; 
+      
+      function locateUser() {
+          map.locate({setView: true, maxZoom: 16, watch: false}); 
+      }
+
+      map.on('locationfound', function(e) {
+          const radius = e.accuracy;
+
+          if (locationMarker) {
+              map.removeLayer(locationMarker);
+          }
+          
+          const UserLocationIcon = L.divIcon({
+              className: 'current-user-location', 
+              iconSize: [20, 20],
+              html: '<i class="fa-solid fa-location-crosshairs" style="color: red; font-size: 20px;"></i>' 
+          });
+
+          locationMarker = L.marker(e.latlng, {icon: UserLocationIcon}).addTo(map)
+              .bindPopup("<b>Lokasi Anda</b><br>Akurasi: " + Math.round(radius) + " meter").openPopup();
+
+          L.circle(e.latlng, radius, {
+              color: '#007bff',
+              fillColor: '#007bff',
+              fillOpacity: 0.3,
+              weight: 2
+          }).addTo(map);
+      });
+
+      map.on('locationerror', function(e) {
+          console.error("Gagal mendapatkan lokasi Anda: " + e.message);
+      });
+      
+      locateUser(); 
+
+      function addMarkerInteractivity(marker) {
+          marker.on('mouseover', function(e) {
+              const iconElement = e.target.getElement();
+              if (iconElement) {
+                  iconElement.classList.add('hovered');
+              }
+          });
+
+          marker.on('mouseout', function(e) {
+              const iconElement = e.target.getElement();
+              if (iconElement) {
+                  iconElement.classList.remove('hovered');
+              }
+          });
+      }
+
+      window.focusOnMarker = focusOnMarker;
+      function focusOnMarker(lat, lng) {
+        map.setView([lat, lng], 17);
+        const marker = markers.find((m) => {
+          const pos = m.getLatLng();
+          const tolerance = 0.000001; 
+          return Math.abs(pos.lat - lat) < tolerance && Math.abs(pos.lng - lng) < tolerance;
+        });
+        if (marker) marker.openPopup();
+      }
+    </script>
+  </body>
+</html>

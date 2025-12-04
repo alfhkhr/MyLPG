@@ -19,15 +19,37 @@ export default function TabLayout() {
       <Tabs.Screen
         name="index"
         options={{
-          title: 'Home',
+          title: 'Beranda',
           tabBarIcon: ({ color }) => <IconSymbol size={28} name="house.fill" color={color} />,
         }}
       />
       <Tabs.Screen
-        name="explore"
+        name="lokasi"
         options={{
-          title: 'Explore',
+          title: 'List Lokasi Agen',
           tabBarIcon: ({ color }) => <IconSymbol size={28} name="paperplane.fill" color={color} />,
+        }}
+      />
+
+      <Tabs.Screen
+        name="forminputlocation"
+        options={{
+        title: 'Form Input Lokasi',
+        tabBarIcon: ({ color }) => <IconSymbol
+          size={28}
+          name="chevron.left.forwardslash.chevron.right"
+          color={color}/>,
+        }}
+      />
+  
+      <Tabs.Screen
+        name="mapwebview"
+        options={{
+        title: 'Loksi Agen',
+        tabBarIcon: ({ color }) => <IconSymbol
+          size={28}
+          name="map.fill"
+          color={color}/>,
         }}
       />
     </Tabs>
