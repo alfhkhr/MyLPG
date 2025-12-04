@@ -91,13 +91,10 @@ Halaman daftar lengkap seluruh agen yang tersimpan di database.
 Berikut adalah antarmuka pengguna dari aplikasi MY LPG:
 
 | **Halaman Beranda** | **Peta Lokasi Agen** |
-|:---:|:---:|
 | <img src="assets/beranda.jpeg" alt="Beranda" width="250"/> | <img src="assets/peta2.jpeg" alt="Peta Lokasi Agen" width="250"/> |
 | **Input Agen Baru** | **Edit Location** |
-|:---:|:---:|
 | <img src="assets/input.jpeg" alt="Form Input Agen Baru" width="250"/> | <img src="assets/edit.jpeg" alt="Form Edit Location" width="250"/> |
 | **List data dengan opsi Edit & Hapus**|
-|:---:|
 | <img src="assets/list.jpeg" alt="List Lokasi Agen" width="250"/> |
 
 
